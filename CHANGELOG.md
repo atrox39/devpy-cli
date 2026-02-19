@@ -5,7 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2024-05-23
+## [1.0.1] - 2026-02-19
+
+### Fixed
+- Packaging: included missing modules so the installed `devpy-cli` script no longer fails at startup.
+  - Added `setup_wizard` to packaged modules to avoid `ImportError` on first run when `.env` is not present. See [pyproject.toml](file:///c:/Users/cortega/Development/python/devops/pyproject.toml#L39-L48).
+  - Packaged `llm` directory and added `llm/__init__.py` so imports like `from llm.deepseek import llm` work in the installed environment. See [pyproject.toml](file:///c:/Users/cortega/Development/python/devops/pyproject.toml#L39-L48).
+  - Result: fixes `ModuleNotFoundError: No module named 'llm'` and ensures the setup wizard loads correctly when `devpy-cli` runs.
+
+## [1.0.0] - 2026-02-19
 
 ### Security
 - **Command Injection Prevention**: Implemented strict input sanitization for `docker exec` commands to prevent unauthorized shell command chaining or substitution.
