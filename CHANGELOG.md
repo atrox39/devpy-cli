@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2026-02-19
+
+### Added
+- Dynamic CLI version display: DevPy CLI now reads its version from the installed package metadata or `pyproject.toml`, so the banner always reflects the current release without hardcoding it in `frontend_cli.py`.
+- Version update check: on startup, the CLI queries PyPI for the latest `devpy-cli` version and, if a newer release is available, shows a non-intrusive notice with the recommended `pip install -U devpy-cli` command.
+
 ## [1.0.1] - 2026-02-19
 
 ### Fixed

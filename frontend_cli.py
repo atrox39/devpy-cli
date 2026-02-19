@@ -1,12 +1,75 @@
+import os
+from importlib.metadata import PackageNotFoundError, version
+from pathlib import Path
+import json
+import urllib.request
+import tomllib
 from rich.console import Console
 from rich.prompt import Prompt
 from rich.markdown import Markdown
 from backend import run_agent_flow, config_manager, ssh_key_manager, reset_docker_client, permission_manager
-import os
-from pathlib import Path
 from setup_wizard import run_setup
 
 console = Console()
+
+
+def get_cli_version():
+  try:
+    return version('devpy-cli')
+  except PackageNotFoundError:
+    pass
+
+  try:
+    root = Path(__file__).resolve().parent
+    pyproject_path = root / 'pyproject.toml'
+    if pyproject_path.exists():
+      data = tomllib.loads(pyproject_path.read_text(encoding='utf-8'))
+      project = data.get('project') or {}
+      value = project.get('version')
+      if isinstance(value, str) and value:
+        return value
+  except Exception:
+    pass
+
+  return 'unknown'
+
+
+def fetch_latest_version():
+  try:
+    with urllib.request.urlopen('https://pypi.org/pypi/devpy-cli/json', timeout=2) as resp:
+      if resp.status != 200:
+        return None
+      data = json.loads(resp.read().decode('utf-8'))
+      info = data.get('info') or {}
+      value = info.get('version')
+      if isinstance(value, str) and value:
+        return value
+  except Exception:
+    return None
+
+
+def normalize_version(value):
+  parts = []
+  for part in str(value).split('.'):
+    try:
+      parts.append(int(part))
+    except ValueError:
+      break
+  return tuple(parts)
+
+
+def check_for_update():
+  current = get_cli_version()
+  latest = fetch_latest_version()
+  if not current or current == 'unknown' or not latest:
+    return
+  cur_tuple = normalize_version(current)
+  lat_tuple = normalize_version(latest)
+  if not cur_tuple or not lat_tuple:
+    return
+  if cur_tuple < lat_tuple:
+    console.print(f'[yellow]A new version of DevPy CLI is available: {latest} (you have {current}).[/yellow]')
+    console.print('[dim]Update with: pip install -U devpy-cli[/dim]')
 
 
 def handle_config_command(user_input):
@@ -170,7 +233,8 @@ def handle_permissions_command(user_input):
 
 def run_cli():
   console.print(Markdown('# DevPy CLI'))
-  console.print('[dim]Version 1.0.0[/dim]\n')
+  console.print(f'[dim]Version {get_cli_version()}[/dim]\n')
+  check_for_update()
   dry_run_answer = Prompt.ask(
     '\n[bold]Enable dry-run mode?[/bold]',
     choices=['y', 'n'],
