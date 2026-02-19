@@ -16,7 +16,7 @@ An intelligent command-line assistant powered by LLM (DeepSeek/OpenAI) to manage
 
 ## System Requirements
 
-*   Python 3.9 or higher.
+*   Python 3.11 or higher.
 *   Docker client installed (local) or SSH access to a server with Docker.
 *   Operating System: Windows, macOS, Linux.
 
@@ -302,4 +302,4 @@ MIT License. See `LICENSE` file for more details.
 
 ## Author
 
-Developed by [Your Name/Organization].
+Developed by atrox39.

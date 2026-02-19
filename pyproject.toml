@@ -45,4 +45,8 @@ py-modules = [
   "permissions_config_manager",
   "config_manager",
   "ssh_key_manager",
+  "setup_wizard",
+]
+packages = [
+  "llm",
 ]
