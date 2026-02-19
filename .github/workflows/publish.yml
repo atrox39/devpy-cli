@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - master
-    tags:
-      - 'v*'
 
 permissions:
   contents: read
@@ -38,8 +36,6 @@ jobs:
     name: Build and Publish to PyPI
     needs: test
     runs-on: ubuntu-latest
-    # Only publish on tag pushes
-    if: startsWith(github.ref, 'refs/tags/')
     
     permissions:
       contents: write  # IMPORTANT: mandatory for making a GitHub Release
@@ -63,4 +59,5 @@ jobs:
     - name: Publish distribution 📦 to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        password: ${{ secrets.PYPI_API_TOKEN }}
+        attestations: true
+        skip-existing: true
