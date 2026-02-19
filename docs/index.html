@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevPy CLI - Intelligent Docker Management</title>
+  <style>
+    :root {
+      /* Color Palette */
+      --background: #09090b;
+      --surface: #18181b;
+      --surface-hover: #27272a;
+      --border: #27272a;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --text-primary: #f4f4f5;
+      --text-secondary: #a1a1aa;
+      --accent: #8b5cf6;
+
+      /* Gradients */
+      --gradient-hero: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      --gradient-text: linear-gradient(to right, #60a5fa, #a78bfa);
+
+      /* Shadows & Effects */
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --glow: 0 0 40px -10px rgba(59, 130, 246, 0.3);
+
+      /* Spacing */
+      --container-width: 1200px;
+      --header-height: 80px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Utility Classes */
+    .container {
+      max-width: var(--container-width);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--text-secondary);
+      background: var(--surface);
+    }
+
+    /* Header */
+    header {
+      height: var(--header-height);
+      border-bottom: 1px solid var(--border);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 50;
+      background: rgba(9, 9, 11, 0.8);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-content {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo span {
+      background: var(--gradient-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding-top: calc(var(--header-height) + 6rem);
+      padding-bottom: 6rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--primary);
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    h1 {
+      font-size: 4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 span {
+      background: var(--gradient-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    /* Features Grid */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin: 4rem 0;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      border-radius: 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-4px);
+      box-shadow: var(--glow);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(59, 130, 246, 0.1);
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+    }
+
+    .feature-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* Terminal Demo */
+    .demo-section {
+      margin: 6rem 0;
+      position: relative;
+    }
+
+    .terminal-window {
+      background: #0d0d0d;
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg), var(--glow);
+      overflow: hidden;
+    }
+
+    .terminal-header {
+      background: var(--surface);
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .dot.red {
+      background: #ef4444;
+    }
+
+    .dot.yellow {
+      background: #eab308;
+    }
+
+    .dot.green {
+      background: #22c55e;
+    }
+
+    .terminal-body {
+      padding: 1.5rem;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 0.9rem;
+      color: #d4d4d4;
+      white-space: pre-wrap;
+    }
+
+    .prompt-user {
+      color: #10b981;
+    }
+
+    .prompt-cmd {
+      color: #f59e0b;
+    }
+
+    .response-agent {
+      color: #60a5fa;
+    }
+
+    .response-dim {
+      color: #71717a;
+    }
+
+    /* Installation */
+    .install-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 500px;
+      margin: 2rem auto;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-primary);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 4rem 0;
+      margin-top: 6rem;
+      text-align: center;
+      color: var(--text-secondary);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero {
+        padding-top: calc(var(--header-height) + 3rem);
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+
+  <header>
+    <div class="container nav-content">
+      <div class="logo">
+        ⚡ <span>DevPy CLI</span>
+      </div>
+      <a href="https://github.com/atrox39/devpy-cli" class="btn btn-outline"
+        style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+        GitHub
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <span class="badge">v1.0.0 Now Available</span>
+      <h1>Manage Docker with <br><span>Artificial Intelligence</span></h1>
+      <p class="subtitle">
+        An intelligent CLI assistant that translates natural language into secure DevOps operations.
+        Local or remote, it handles the complexity for you.
+      </p>
+      <div class="hero-actions">
+        <a href="#install" class="btn btn-primary">Get Started</a>
+        <a href="https://github.com/atrox39/devpy-cli" class="btn btn-outline">View Documentation</a>
+      </div>
+    </section>
+
+    <section class="demo-section">
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <div class="dot red"></div>
+          <div class="dot yellow"></div>
+          <div class="dot green"></div>
+        </div>
+        <div class="terminal-body">
+          <span class="prompt-user">user@devops:~$</span> <span class="prompt-cmd">devpy-cli</span>
+          <span class="response-dim"># DevPy CLI v1.0.0 initialized</span>
+
+          <span class="prompt-user">?</span> <span class="prompt-cmd">Restart the redis container and show me the error
+            logs</span>
+
+          <span class="response-agent">⚡ Agent: Analyzing request...</span>
+
+          <span class="response-dim">┌── Permission Required ──────────────────────────────┐
+            │ Operation: restart_container │
+            │ Target: redis-cache │
+            │ Impact: Service interruption during restart │
+            └─────────────────────────────────────────────────────┘</span>
+          <span class="prompt-user">?</span> Confirm execution (y/n): y
+
+          <span class="response-agent">✓ Container 'redis-cache' restarted successfully.</span>
+          <span class="response-dim">Fetching logs (tail=20)...</span>
+          <span class="text-primary">[Error] Connection refused at 127.0.0.1:6379</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="feature-card">
+        <div class="feature-icon">💬</div>
+        <h3>Natural Language</h3>
+        <p>Stop memorizing complex flags. Just speak naturally to manage containers, check logs, and monitor resources.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Enterprise Security</h3>
+        <p>AES-256 encrypted SSH keys, granular permission system with dry-run mode, and detailed audit logging.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔄</div>
+        <h3>Hybrid Cloud</h3>
+        <p>Seamlessly switch between local Docker Desktop and remote production servers via secure SSH tunnels.</p>
+      </div>
+    </section>
+
+    <section id="install" style="text-align: center; margin-bottom: 4rem;">
+      <h2 style="font-size: 2rem; margin-bottom: 1rem;">Ready to upgrade your workflow?</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 2rem;">Install instantly via pip and start automating.</p>
+
+      <div class="install-box">
+        <code>pip install devpy-cli</code>
+        <button class="copy-btn" onclick="navigator.clipboard.writeText('pip install devpy-cli')">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
+            </path>
+          </svg>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; <span id="year"></span> DevPy CLI. Released under MIT License.</p>
+    </div>
+  </footer>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+
+</html>

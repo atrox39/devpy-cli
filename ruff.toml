@@ -1,0 +1,9 @@
+line-length = 120
+indent-width = 2
+target-version = "py311"
+
+[format]
+indent-style = "space"
+docstring-code-format = true
+quote-style = "single"
+line-ending = "lf"
