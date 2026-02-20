@@ -234,8 +234,33 @@ def restart_docker_container(container_name: str) -> str:
 
 
 @tool
+def download_image(image_name: str) -> str:
+  """Downloads a Docker image from a registry"""
+  command_preview = build_command_preview(['docker', 'pull', image_name])
+
+  def action():
+    client = get_docker_client()
+    client.images.pull(image_name)
+    return f'Image {image_name} downloaded'
+
+  return permission_manager.execute(
+    operation='download_image',
+    fn=action,
+    fn_kwargs={},
+    command_preview=command_preview,
+    impact='Downloads a Docker image',
+    command_key=f'download:{image_name}',
+    prompt_func=permission_prompt,
+  )
+
+
+@tool
 def create_container(container_image: str, container_name: str) -> str:
   """Creates and starts a new Docker container with given image and name"""
+  images = get_docker_client().images.list()
+  if container_image not in [img.tags[0] for img in images]:
+    download_image(container_image)
+
   command_preview = build_command_preview(['docker', 'run', '-d', '--name', container_name, container_image])
 
   def action():
@@ -394,6 +419,7 @@ tools = [
   stop_container,
   start_monitoring,
   exec_command,
+  download_image,
 ]
 
 

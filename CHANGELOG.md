@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2026-02-19
+
+### Fixed
+- Container creation now correctly handles missing images. When `create_container` is called with an image that is not yet present locally, it will automatically pull the image using the new `download_image` tool before creating and starting the container. This prevents runtime errors during first-time deployments that reference images not previously pulled. See backend implementation in [backend.py](file:///c:/Users/cortega/Development/python/devops/backend.py#L236-L280).
+
 ## [1.0.2] - 2026-02-19
 
 ### Added
