@@ -408,6 +408,34 @@ def exec_command(container_name: str, command: str) -> str:
   )
 
 
+@tool
+def delete_image(image_name: str) -> str:
+  """Deletes a Docker image if it exists"""
+  images = get_docker_client().images.list()
+  if image_name not in [img.tags[0] for img in images]:
+    return f'Image {image_name} not found'
+
+  command_preview = build_command_preview(['docker', 'rmi', image_name])
+
+  def action():
+    client = get_docker_client()
+    try:
+      client.images.remove(image_name)
+      return f'Image {image_name} deleted'
+    except docker.errors.ImageNotFound:
+      return f'Image {image_name} not found'
+
+  return permission_manager.execute(
+    operation='delete_image',
+    fn=action,
+    fn_kwargs={},
+    command_preview=command_preview,
+    impact='Deletes the specified Docker image if it exists',
+    command_key=f'delete_image:{image_name}',
+    prompt_func=permission_prompt,
+  )
+
+
 tools = [
   check_resource,
   get_docker_logs,
@@ -420,6 +448,7 @@ tools = [
   start_monitoring,
   exec_command,
   download_image,
+  delete_image,
 ]
 
 

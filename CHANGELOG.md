@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Container creation now correctly handles missing images. When `create_container` is called with an image that is not yet present locally, it will automatically pull the image using the new `download_image` tool before creating and starting the container. This prevents runtime errors during first-time deployments that reference images not previously pulled. See backend implementation in [backend.py](file:///c:/Users/cortega/Development/python/devops/backend.py#L236-L280).
+- Added a safe Docker image deletion tool. The new `delete_image` backend function checks whether the image exists and wraps `docker image remove` behind the permission system, returning clear messages when the image is missing instead of raising unhandled exceptions. See [backend.py](file:///c:/Users/cortega/Development/python/devops/backend.py#L411-L436).
 
 ## [1.0.2] - 2026-02-19
 

@@ -258,6 +258,49 @@ The permission log still records what *would* have been executed.
 
 ---
 
+### Built-in Tools
+
+DevPy CLI exposes a set of Docker-focused tools that the agent can call to fulfill your requests:
+
+- **check_resource**  
+  Shows CPU, memory, and disk usage of the local host.
+
+- **get_docker_logs**  
+  Retrieves the last logs of a container (`tail` configurable).
+
+- **list_containers**  
+  Lists active Docker containers with their current status.
+
+- **inspect_container**  
+  Returns low-level attributes and configuration of a container.
+
+- **restart_docker_container**  
+  Restarts a container, going through the permission system before execution.
+
+- **create_container**  
+  Creates and starts a new container from a given image and name.  
+  If the image is not present locally, it is automatically pulled first.
+
+- **delete_container**  
+  Stops and removes the specified container (with confirmation).
+
+- **stop_container**  
+  Gracefully stops a running container.
+
+- **start_monitoring**  
+  Starts a background memory monitor for a container and alerts if usage crosses a threshold.
+
+- **exec_command**  
+  Executes a shell command inside a container. Commands are sanitized to block chaining and substitution.
+
+- **download_image**  
+  Downloads (pulls) a Docker image from a registry.
+
+- **delete_image**  
+  Deletes a Docker image if it exists, behind the same permission and logging layer.
+
+---
+
 ## Authentication and Security
 
 - **LLM API Authentication**

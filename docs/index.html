@@ -433,6 +433,50 @@
       </div>
     </section>
 
+    <section style="margin-top: 4rem;">
+      <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">Core Docker Tools</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 2rem; max-width: 640px;">
+        Under the hood, DevPy CLI uses a curated set of tools to inspect, manage, and automate your Docker environment.
+      </p>
+      <div class="features">
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Monitoring & Health</h3>
+          <p>
+            <strong>check_resource</strong> shows CPU, memory, and disk usage of the host.
+            <strong>start_monitoring</strong> watches container memory and alerts when thresholds are exceeded.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📦</div>
+          <h3>Container Lifecycle</h3>
+          <p>
+            <strong>list_containers</strong>, <strong>inspect_container</strong>, and <strong>get_docker_logs</strong>
+            help you understand what is running.
+            <strong>create_container</strong>, <strong>restart_docker_container</strong>,
+            <strong>stop_container</strong>, and <strong>delete_container</strong> manage the full lifecycle.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🖼️</div>
+          <h3>Image Management</h3>
+          <p>
+            <strong>download_image</strong> pulls images on demand when they are missing.
+            <strong>delete_image</strong> removes Docker images safely, checking existence and going through the
+            permission layer.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⌨️</div>
+          <h3>In-Container Commands</h3>
+          <p>
+            <strong>exec_command</strong> runs sanitized commands inside containers, blocking dangerous chaining and
+            substitution while still giving you full control.
+          </p>
+        </div>
+      </div>
+    </section>
+
     <section id="install" style="text-align: center; margin-bottom: 4rem;">
       <h2 style="font-size: 2rem; margin-bottom: 1rem;">Ready to upgrade your workflow?</h2>
       <p style="color: var(--text-secondary); margin-bottom: 2rem;">Install instantly via pip and start automating.</p>
