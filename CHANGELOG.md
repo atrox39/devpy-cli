@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] - 2026-02-19
+
+### Added
+- Multi-provider LLM support: DevPy CLI can now run with Anthropic Claude, Google Gemini, and local Ollama/OpenWebUI backends in addition to the existing DeepSeek and OpenAI integrations. Each provider is wrapped in a dedicated adapter under the `llm/` package and selected via the `LLM` environment variable.
+- OpenWebUI/Ollama compatibility layer: introduced an Ollama adapter that speaks the OpenAI-compatible HTTP API, allowing DevPy to connect directly to Ollama or OpenWebUI using configurable base URLs and models.
+
+
 ## [1.0.3] - 2026-02-19
 
 ### Fixed

@@ -1,6 +1,6 @@
 # DevPy CLI
 
-An intelligent command-line assistant powered by LLM (DeepSeek/OpenAI) to manage Docker environments, both local and remote via SSH. Designed to simplify DevOps tasks with natural language, ensuring security and control.
+An intelligent command-line assistant powered by multiple LLM providers (DeepSeek, OpenAI, Anthropic Claude, Google Gemini, Ollama/OpenWebUI) to manage Docker environments, both local and remote via SSH. Designed to simplify DevOps tasks with natural language, ensuring security and control.
 
 ## Key Features
 
@@ -306,12 +306,22 @@ DevPy CLI exposes a set of Docker-focused tools that the agent can call to fulfi
 - **LLM API Authentication**
   - The `.env` file created by the setup wizard stores:
     - `LLM` – which provider/adapter to use.
-    - `<PROVIDER>_API_KEY` – the API key for that provider.
-    - Optionally `LLM_BASE_URL` – custom base URL for compatible providers.
+    - `<PROVIDER>_API_KEY` – the API key for that provider (for example `DEEPSEEK_API_KEY`, `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_API_KEY`).
+    - Optionally `LLM_BASE_URL` – custom base URL for compatible providers (including OpenAI-compatible proxies such as Ollama or OpenWebUI).
   - You can re-run the wizard at any time with:
     ```bash
     config llm
     ```
+
+- **Supported LLM Providers**
+  - **DeepSeek** – uses `LLM=deepseek` and `DEEPSEEK_API_KEY`, with optional `LLM_BASE_URL` override.
+  - **OpenAI (ChatGPT / GPT-4o family)** – uses `LLM=chatgpt` and `OPENAI_API_KEY`.
+  - **Anthropic Claude** – uses `LLM=anthropic` or `LLM=claude` with `ANTHROPIC_API_KEY`.
+  - **Google Gemini** – uses `LLM=google` or `LLM=gemini` with `GOOGLE_API_KEY`.
+  - **Ollama / OpenWebUI** – uses `LLM=ollama` or `LLM=openwebui` and talks to an OpenAI-compatible endpoint:
+    - `LLM_BASE_URL`, `OLLAMA_BASE_URL`, or `OPENWEBUI_BASE_URL` define the base URL (e.g. `http://localhost:11434` or an OpenWebUI URL).
+    - `OLLAMA_MODEL` selects the local model (for example `llama3.1`).
+    - `OPENAI_API_KEY` can be any non-empty token (often not validated by Ollama/OpenWebUI).
 
 - **SSH Key Encryption**
   - Stored SSH keys live in `ssh_keys.enc`.

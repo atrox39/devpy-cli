@@ -376,7 +376,7 @@
       <h1>Manage Docker with <br><span>Artificial Intelligence</span></h1>
       <p class="subtitle">
         An intelligent CLI assistant that translates natural language into secure DevOps operations.
-        Local or remote, it handles the complexity for you.
+        Local or remote, it handles the complexity for you and works with your favorite LLM provider.
       </p>
       <div class="hero-actions">
         <a href="#install" class="btn btn-primary">Get Started</a>
@@ -430,6 +430,40 @@
         <div class="feature-icon">🔄</div>
         <h3>Hybrid Cloud</h3>
         <p>Seamlessly switch between local Docker Desktop and remote production servers via secure SSH tunnels.</p>
+      </div>
+    </section>
+
+    <section style="margin-top: 4rem;">
+      <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">LLM Providers</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 2rem; max-width: 640px;">
+        DevPy CLI plugs into multiple LLM backends so you can use the provider that fits your workflow, budget, or
+        infrastructure.
+      </p>
+      <div class="features">
+        <div class="feature-card">
+          <div class="feature-icon">🌊</div>
+          <h3>DeepSeek & OpenAI</h3>
+          <p>
+            First-class support for DeepSeek and OpenAI (GPT-4o family) via LangChain adapters. Configure API keys in
+            your <code>.env</code> and switch providers with a single <code>LLM</code> value.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🤖</div>
+          <h3>Claude & Gemini</h3>
+          <p>
+            Use Anthropic Claude and Google Gemini for high-quality reasoning and code understanding. DevPy wraps both
+            providers and exposes a consistent agent experience regardless of the backend.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💻</div>
+          <h3>Ollama & OpenWebUI</h3>
+          <p>
+            Run fully local models with Ollama or behind an OpenWebUI proxy using an OpenAI-compatible endpoint. Point
+            DevPy CLI at your local URL and keep all tokens and data on your own infrastructure.
+          </p>
+        </div>
       </div>
     </section>
 

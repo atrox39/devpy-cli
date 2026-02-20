@@ -452,8 +452,15 @@ tools = [
 ]
 
 
-if os.getenv('LLM') == 'deepseek':
+llm_name = os.getenv('LLM')
+if llm_name == 'deepseek':
   from llm.deepseek import llm
+elif llm_name in ('anthropic', 'claude'):
+  from llm.claude import llm
+elif llm_name in ('google', 'gemini'):
+  from llm.google import llm
+elif llm_name in ('ollama', 'openwebui'):
+  from llm.ollama import llm
 else:
   from llm.chatgpt import llm
 
